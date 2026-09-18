@@ -1,0 +1,59 @@
+# env files, never commit real secrets
+.env
+.env.local
+.env.*.local
+
+# JS/TS build output and package manager cruft (any depth)
+node_modules/
+.next/
+out/
+dist/
+build/
+.turbo/
+.vercel/
+.pnpm-store/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Python build/runtime artifacts (any depth)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Go build/runtime artifacts (any depth)
+server/tmp/
+tmp/
+*.test
+*.out
+coverage.txt
+bin/
+
+# generic logs, caches, and temp files
+*.log
+.cache/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.bak
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.claude/
+
+# GeoIP MMDB files — large binaries, refreshed periodically from an
+# upstream data provider (see server/.env.example). Never commit these.
+server/data/geoip/*.mmdb

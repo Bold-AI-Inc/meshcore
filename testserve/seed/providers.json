@@ -1,0 +1,355 @@
+{
+  "api_key": "testserve-key",
+  "base_url": "http://localhost:9000",
+  "providers": [
+    {
+      "name": "testserve-anthropic",
+      "provider_family": "anthropic",
+      "http_method": "POST",
+      "endpoint_url": "http://localhost:9000/anthropic/v1/messages",
+      "header_template": {
+        "x-api-key": "{{api_key}}",
+        "anthropic-version": "2023-06-01"
+      },
+      "request_body_template": {
+        "model": "{{model}}",
+        "max_tokens": "{{max_tokens_json}}",
+        "stream": true,
+        "messages": [
+          {
+            "role": "user",
+            "content": "{{content_json}}"
+          }
+        ]
+      },
+      "response_delta_path": "delta.text",
+      "usage_input_tokens_path": "message.usage.input_tokens",
+      "usage_output_tokens_path": "usage.output_tokens",
+      "models": [
+        {
+          "model": "dummy-chat",
+          "kind": "chat",
+          "formats": [
+            "text",
+            "image",
+            "document"
+          ],
+          "name": "ts-claude"
+        },
+        {
+          "model": "dummy-slow",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-slow"
+        },
+        {
+          "model": "dummy-error-429",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-429"
+        },
+        {
+          "model": "dummy-error-500",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-500"
+        },
+        {
+          "model": "dummy-conn-reset",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-reset"
+        },
+        {
+          "model": "dummy-badjson",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-badjson"
+        },
+        {
+          "model": "dummy-nousage",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-nousage"
+        },
+        {
+          "model": "dummy-empty",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-empty"
+        },
+        {
+          "model": "dummy-unicode",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-unicode"
+        },
+        {
+          "model": "dummy-huge",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-huge"
+        },
+        {
+          "model": "dummy-flaky",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-flaky"
+        },
+        {
+          "model": "dummy-keepalive",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-keepalive"
+        }
+      ]
+    },
+    {
+      "name": "testserve-openai",
+      "provider_family": "openai",
+      "http_method": "POST",
+      "endpoint_url": "http://localhost:9000/openai/v1/chat/completions",
+      "header_template": {
+        "Authorization": "Bearer {{api_key}}"
+      },
+      "request_body_template": {
+        "model": "{{model}}",
+        "messages": [
+          {
+            "role": "user",
+            "content": "{{content_json}}"
+          }
+        ],
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "max_tokens": "{{max_tokens_json}}"
+      },
+      "response_delta_path": "choices.0.delta.content",
+      "usage_input_tokens_path": "usage.prompt_tokens",
+      "usage_output_tokens_path": "usage.completion_tokens",
+      "embedding_endpoint_url": "http://localhost:9000/openai/v1/embeddings",
+      "embedding_request_body_template": {
+        "model": "{{model}}",
+        "input": "{{input_json}}"
+      },
+      "embedding_response_vector_path": "data.0.embedding",
+      "generation_endpoint_url": "http://localhost:9000/openai/v1/images/generations",
+      "generation_request_body_template": {
+        "model": "{{model}}",
+        "prompt": "{{prompt_json}}",
+        "n": 1
+      },
+      "generation_response_media_path": "data.0.b64_json",
+      "models": [
+        {
+          "model": "dummy-chat",
+          "kind": "chat",
+          "formats": [
+            "text",
+            "image",
+            "document",
+            "audio"
+          ],
+          "name": "ts-gpt"
+        },
+        {
+          "model": "dummy-embed",
+          "kind": "embedding",
+          "name": "ts-embed"
+        },
+        {
+          "model": "dummy-image",
+          "kind": "image_generation",
+          "output_media_type": "image/png",
+          "name": "ts-image"
+        }
+      ]
+    },
+    {
+      "name": "testserve-gemini",
+      "provider_family": "gemini",
+      "http_method": "POST",
+      "endpoint_url": "http://localhost:9000/gemini/v1beta/models/{{model}}:streamGenerateContent?alt=sse",
+      "header_template": {
+        "x-goog-api-key": "{{api_key}}"
+      },
+      "request_body_template": {
+        "contents": [
+          {
+            "role": "user",
+            "parts": "{{content_json}}"
+          }
+        ]
+      },
+      "response_delta_path": "candidates.0.content.parts.0.text",
+      "usage_input_tokens_path": "usageMetadata.promptTokenCount",
+      "usage_output_tokens_path": "usageMetadata.candidatesTokenCount",
+      "embedding_endpoint_url": "http://localhost:9000/gemini/v1beta/models/{{model}}:embedContent",
+      "embedding_request_body_template": {
+        "content": {
+          "parts": [
+            {
+              "text": "{{input_json}}"
+            }
+          ]
+        }
+      },
+      "embedding_response_vector_path": "embedding.values",
+      "generation_endpoint_url": "http://localhost:9000/gemini/v1beta/models/{{model}}:predict",
+      "generation_request_body_template": {
+        "instances": [
+          {
+            "prompt": "{{prompt_json}}"
+          }
+        ]
+      },
+      "generation_response_media_path": "predictions.0.bytesBase64Encoded",
+      "models": [
+        {
+          "model": "dummy-chat",
+          "kind": "chat",
+          "formats": [
+            "text",
+            "image",
+            "document",
+            "audio",
+            "video"
+          ],
+          "name": "ts-gemini"
+        },
+        {
+          "model": "dummy-embed",
+          "kind": "embedding",
+          "name": "ts-embed-gemini"
+        },
+        {
+          "model": "dummy-video",
+          "kind": "video_generation",
+          "output_media_type": "video/mp4",
+          "name": "ts-video"
+        }
+      ]
+    },
+    {
+      "name": "testserve-video-url",
+      "provider_family": "openai",
+      "http_method": "POST",
+      "endpoint_url": "http://localhost:9000/openai/v1/chat/completions",
+      "header_template": {
+        "Authorization": "Bearer {{api_key}}"
+      },
+      "request_body_template": {
+        "model": "{{model}}",
+        "messages": [
+          {
+            "role": "user",
+            "content": "{{content_json}}"
+          }
+        ],
+        "stream": true
+      },
+      "response_delta_path": "choices.0.delta.content",
+      "generation_endpoint_url": "http://localhost:9000/v1/videos/generations",
+      "generation_request_body_template": {
+        "model": "{{model}}",
+        "prompt": "{{prompt_json}}"
+      },
+      "generation_response_media_path": "video.url",
+      "models": [
+        {
+          "model": "dummy-video",
+          "kind": "video_generation",
+          "output_media_type": "video/mp4",
+          "name": "ts-video-url"
+        }
+      ]
+    },
+    {
+      "name": "testserve-ollama",
+      "provider_family": "ollama",
+      "http_method": "POST",
+      "endpoint_url": "http://localhost:9000/ollama/v1/chat/completions",
+      "header_template": {
+        "Authorization": "Bearer {{api_key}}"
+      },
+      "request_body_template": {
+        "model": "{{model}}",
+        "messages": [
+          {
+            "role": "user",
+            "content": "{{content_json}}"
+          }
+        ],
+        "stream": true
+      },
+      "response_delta_path": "choices.0.delta.content",
+      "models": [
+        {
+          "model": "dummy-chat",
+          "kind": "chat",
+          "formats": [
+            "text",
+            "image"
+          ],
+          "name": "ts-ollama"
+        }
+      ]
+    },
+    {
+      "name": "testserve-customdone",
+      "provider_family": "anthropic",
+      "http_method": "POST",
+      "endpoint_url": "http://localhost:9000/anthropic/v1/messages",
+      "header_template": {
+        "x-api-key": "{{api_key}}"
+      },
+      "request_body_template": {
+        "model": "{{model}}",
+        "max_tokens": "{{max_tokens_json}}",
+        "stream": true,
+        "messages": [
+          {
+            "role": "user",
+            "content": "{{content_json}}"
+          }
+        ]
+      },
+      "response_delta_path": "delta.text",
+      "response_done_signal": "END_OF_STREAM",
+      "models": [
+        {
+          "model": "dummy-customdone",
+          "kind": "chat",
+          "formats": [
+            "text"
+          ],
+          "name": "ts-customdone"
+        }
+      ]
+    }
+  ]
+}

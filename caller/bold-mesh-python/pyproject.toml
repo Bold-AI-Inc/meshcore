@@ -1,0 +1,15 @@
+[project]
+name = "bold-mesh"
+version = "1.0.0"
+description = "llm_caller() -- a thin, ergonomic client for the Mesh AI gateway"
+requires-python = ">=3.9"
+dependencies = ["requests>=2.31"]
+readme = "README.md"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = true

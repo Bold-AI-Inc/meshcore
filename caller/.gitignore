@@ -1,0 +1,19 @@
+# Never commit a real key
+.env
+
+# Python build/runtime artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+
+# Node/TypeScript build artifacts (also covered by the root .gitignore,
+# repeated here so this directory is self-explanatory on its own)
+node_modules/
+
+# Editor/OS cruft
+.DS_Store

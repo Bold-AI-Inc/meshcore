@@ -1,0 +1,20 @@
+{
+  "name": "bold-mesh",
+  "version": "1.0.0",
+  "description": "llmCaller() -- a thin, ergonomic client for the Mesh AI gateway",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc",
+    "example": "tsc && node dist/example.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  }
+}

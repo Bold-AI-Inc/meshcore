@@ -1,0 +1,24 @@
+# env
+.env
+.env.*.local
+
+# air (live-reload) build output
+tmp/
+
+# compiled binaries
+/server
+/main
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+
+# go tooling
+*.test
+*.out
+coverage.txt
+
+# GeoIP MMDB files (see .env.example) — large, refreshed periodically
+data/geoip/*.mmdb
